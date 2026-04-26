@@ -1,0 +1,7 @@
+POST http://localhost:8080/mvc/tarefas
+Content-Type: application/json
+
+{
+  "firstName": 222,
+  "secondName": 333
+}
