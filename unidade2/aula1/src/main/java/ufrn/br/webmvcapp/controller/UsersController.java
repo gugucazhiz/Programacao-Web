@@ -2,6 +2,7 @@ package ufrn.br.webmvcapp.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,12 +10,14 @@ import ufrn.br.webmvcapp.domain.User;
 import ufrn.br.webmvcapp.domain.UserDTO;
 import ufrn.br.webmvcapp.service.UserService;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/mvc")
-public class MvcController {
+@RequestMapping("/users")
+public class UsersController {
     UserService service;
-    public MvcController(UserService service){
-        this.service = service;
+    public UsersController(UserService userService){
+        this.service = userService;
     }
 
     //um jeito de se fazer:
@@ -29,16 +32,24 @@ public class MvcController {
     //The other way is using data biding, and to use this
     // u need a model, in that case i will use the model that i created
     // "User.java"
-    @GetMapping("/tarefas")
-    public String getNewTarefa(){
-        return "newTask";
+
+    @GetMapping("/list")
+    public String getUsersList(Model model){
+        List<User> users = service.listUser();
+        model.addAttribute("users",users.get(1));
+        return  "users";
     }
 
-    @PostMapping("/tarefas")
-    public String postNewTarefa(@Valid UserDTO userdto){//when the sping tryes to submit he will try
+    @GetMapping("/create")
+    public String getNewUser(){
+        return "newUsers";
+    }
+
+    @PostMapping("/create")
+    public String postNewUser(@Valid UserDTO userdto){//when the sping tryes to submit he will try
         //to bind in that entity
         User user = new User(userdto.getFirstName() , userdto.getLastName());
         System.out.println(user.isAdmin() +"\n User name: "+user.getFirstName());
-        return "redirect:/mvc/tarefas";
+        return "redirect:/users/create/";
     }
 }
