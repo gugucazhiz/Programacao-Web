@@ -1,17 +1,16 @@
 package ufrn.br.webmvcapp.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Data
 @Getter
 @Setter
 @ToString
-@Entity
+@Entity(name = "users")
+@Table(name = "users")
 @NoArgsConstructor
 public class User {
 
@@ -19,11 +18,12 @@ public class User {
     @GeneratedValue (strategy = GenerationType.AUTO)
     private long id;
 
+    @ColumnDefault("false")
     private boolean admin;
 
-    @NotNull
+    @NotBlank
     private String firstName;
-    @NotNull
+    @NotBlank //not blank é melhor pois cobre os casos de notNull e os casos de " "
     private String lastName;
 
     public User(String firstName, String lastName){
