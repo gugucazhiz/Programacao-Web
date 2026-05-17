@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:sec="[http://www.thymeleaf.org/extras/spring-security](http://www.thymeleaf.org/extras/spring-security)">
 <head>
     <meta charset="UTF-8">
     <title>User Creation</title>
 </head>
 <body>
-    <form action="/users/create" method="post">
+    <form action="/users/create" method="post"
+    sec:authorize="hasRole('ADMIN')">
+
+<!--        e necessario o csrf para o post ser autorizado pelo spring security-->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
         <p>Digite Seu primeiro nome: <input name="firstName" ></p>
         <p>Digite Seu Segundo nome: <input name="lastName" ></p>
         <input type="submit" value="Sing up">

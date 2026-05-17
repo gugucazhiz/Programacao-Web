@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Users List</title>
-</head>
+<head th:replace="~{fragments/layout :: head_padrão('Users')}"></head>
 <body>
+<nav th:replace="~{fragments/layout :: menu_superior('users')}"></nav>
     <h1>Welcome To Users Page</h1>
     <table th:unless="${users.isEmpty}">
         <thead>
