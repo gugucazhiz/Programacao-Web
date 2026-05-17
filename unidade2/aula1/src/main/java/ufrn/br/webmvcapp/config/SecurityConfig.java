@@ -32,7 +32,7 @@ public class SecurityConfig {
                 // 2. DEFINIÇÃO DE AUTENTICAÇÃO
                 // Pede ao Spring para usar proteção via Sessão Web e gerar a página de Login Padrão
                 .formLogin(form -> form
-                        .defaultSuccessUrl("/mvc/tarefas", true)
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 );
         return http.build();

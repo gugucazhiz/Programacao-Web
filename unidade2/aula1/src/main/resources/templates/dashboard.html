@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-</head>
-<body>
 
+<head th:replace="~{fragments/layout :: head_padrão('Dashboard')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu_superior('dashboard')}"></nav>
+<p>teste 123</p>
 <p>Hello World Estático</p>
 
 <p th:text="${username}"> Hello World Estático</p>

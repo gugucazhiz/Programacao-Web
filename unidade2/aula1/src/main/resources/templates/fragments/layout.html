@@ -1,0 +1,41 @@
+<html xmlns:th="www.thymeleaf.org">
+    <head th:fragment="head_padrão(title)">
+        <meta charset="UTF-8">
+        <title th:text="${title}">Título Genérico</title>
+        <!-- Aqui fica todo o seu CSS que será injetado globalmente -->
+        <link rel="stylesheet" href="/css/style.css">
+
+        <style>
+
+            .ativo{
+                color: #ff0000;      /* Change text color */
+                font-weight: bold;   /* Make it bold */
+                border-bottom: 2px solid #ff0000;
+                font-size: 1rem;
+            }
+            .notAtivo{
+                background-color: #2575fc;
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                font-weight: bold;
+                font-size: 1rem;
+            }
+        </style>
+    </head>
+
+    <nav th:fragment="menu_superior(telaAtual)">
+        <!-- Menu, Botão de Logout, Logo -->
+        <a href="/"
+           th:classappend="${telaAtual == 'menu' ? 'ativo' : 'notAtivo'}">
+            Menu</a>
+        
+        <a href="/users/list"
+           th:classappend="${telaAtual == 'users' ? 'ativo' : 'notAtivo'}" >
+            Usuarios</a>
+
+        <a href="/dashboard/lista"
+           th:classappend="${telaAtual == 'dashboard' ? 'ativo' : 'notAtivo'}">
+            Tarefas</a>
+    </nav>
+</html>

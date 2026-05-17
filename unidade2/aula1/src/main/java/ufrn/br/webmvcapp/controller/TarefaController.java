@@ -3,8 +3,10 @@ package ufrn.br.webmvcapp.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ufrn.br.webmvcapp.service.TarefaService;
 
+@RequestMapping("/dashboard")
 @Controller
 public class TarefaController {
 
@@ -14,7 +16,8 @@ public class TarefaController {
         this.service = tarefaService;
     }
 
-    @GetMapping("/dashboard/lista")
+
+    @GetMapping("/lista")
     public String getDashboardPage(Model model){
         model.addAttribute("username", "João Miguel");
 
