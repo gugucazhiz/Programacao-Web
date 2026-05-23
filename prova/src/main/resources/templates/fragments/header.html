@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<header th:fragment="header_global">
+<header th:fragment="header_global(titulo)">
+    <title th:text="|Aquatics - ${titulo}|"></title>
     <!-- TOP HEADER -->
     <div id="top-header">
         <div class="container">

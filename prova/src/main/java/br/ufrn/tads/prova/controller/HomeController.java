@@ -11,6 +11,22 @@ public class HomeController {
 
     @GetMapping
     public String getHome(){
-        return "blank";
+        return "home/index";
+    }
+    @GetMapping("blank")
+    public String getBlank(){
+        return "home/blank";
+    }
+    @GetMapping("checkout")
+    public String getCheckout(){
+        return "home/checkout";
+    }
+    @GetMapping("product")
+    public String getProduct(){
+        return "home/product";
+    }
+    @GetMapping("store")
+    public String getStore(){
+        return "home/store";
     }
 }
