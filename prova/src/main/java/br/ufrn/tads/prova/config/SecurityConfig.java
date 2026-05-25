@@ -22,53 +22,31 @@ import org.springframework.web.context.annotation.RequestScope;
 @EnableWebSecurity
 public class SecurityConfig {
 
+
+    //Creditos totais ao codigo do filterchain para o professor taniro
+    //pois o mesmo foi totalmente feito com base nos ensinamentos de suas aulas
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // 1. DEFINIÇÃO DE AUTORIZAÇÃO DE ROTAS
                 .authorizeHttpRequests(authz -> authz
-                        // Regra Específica: A pasta de CSS é pública (Allowlist)
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/admin/").hasRole("ADMIN")
-                        // Regra Geral (Catch-All): Todas as demais exigem autenticação
                         .anyRequest().authenticated()
                 )
-                // 2. DEFINIÇÃO DE AUTENTICAÇÃO
-                // Pede ao Spring para usar proteção via Sessão Web e gerar a página de Login Padrão
                 .formLogin(form -> form
                         .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout") // Rota que aciona o logout
-                        .invalidateHttpSession(true) // Invalida a sessão HTTP
-                        .clearAuthentication(true) // Limpa o contexto de autenticação
-                        .deleteCookies("JSESSIONID") // Deleta o cookie da sessão
-                        .logoutSuccessUrl("/login?logout") // Para onde redirecionar após
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessUrl("/login?logout")
                 );
         return http.build();
     }
-
-//    @Bean
-//    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-//        // Constrói um usuário padrão do Spring
-//        UserDetails administrador = User.builder()
-//                .username("admin")
-//                // Criptografa a senha em tempo real usando a injeção do encoder
-//                .password(encoder.encode(adminPass))
-//                .roles("ADMIN")
-//                .build();
-//        UserDetails visitante = User.builder()
-//                .username("user")
-//                // Criptografa a senha em tempo real usando a injeção do encoder
-//                .password(encoder.encode("senha123"))
-//                .roles("USER")
-//                .build();
-//        // Entrega o usuário construído para o contêiner gerenciar na memória RAM
-//        return new InMemoryUserDetailsManager(administrador,visitante);
-//    }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
