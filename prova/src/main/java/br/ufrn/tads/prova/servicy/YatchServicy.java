@@ -4,8 +4,6 @@ import br.ufrn.tads.prova.domain.dto.YatchDTO;
 import br.ufrn.tads.prova.domain.model.Yatch;
 import br.ufrn.tads.prova.exception.RecursoNaoEncontradoException;
 import br.ufrn.tads.prova.repository.YatchRepository;
-import lombok.Getter;
-import org.hibernate.type.descriptor.jdbc.LocalDateTimeJdbcType;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -55,11 +53,13 @@ public class YatchServicy {
     public String save(YatchDTO yatchDTO,
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes){
+
         Yatch yatch = new Yatch(yatchDTO.getId(),
                 yatchDTO.getName(),
                 yatchDTO.getColor(),
                 yatchDTO.getImagem(),
-                yatchDTO.getCodProduct());
+                yatchDTO.getCodProduct(),
+                yatchDTO.getPrice());
 
         if (bindingResult.hasErrors()) {
             return yatch.getId() == null ? "/admin/cadastro" : "/admin/editar";
@@ -81,7 +81,6 @@ public class YatchServicy {
     public String getImgSorted(){
         String imagemSorted = getIMAGENS_DISPONIVEIS
                 .get(new Random().nextInt(getIMAGENS_DISPONIVEIS.size()));
-        System.out.println(imagemSorted);
         String result = imagemSorted.substring(imagemSorted.lastIndexOf("/") + 1);
         return  result;
     }

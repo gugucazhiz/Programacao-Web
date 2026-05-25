@@ -105,7 +105,7 @@ body {
     margin: 20px auto 28px;
     border-radius: 2px;
 }
-
+/* Número 404 com efeito de recorte vermelho */
 .error-title {
     font-size: 22px;
     font-weight: 700;
@@ -116,6 +116,50 @@ body {
 }
 
 .error-msg {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.8;
+    margin-bottom: 36px;
+}
+
+.error1-code {
+    font-size: 140px;
+    font-weight: 700;
+    line-height: 1;
+    color: #1a1a2e;
+    position: relative;
+    display: inline-block;
+    letter-spacing: -4px;
+    margin-bottom: 8px;
+}
+
+.error1-code::after {
+    content: '404';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    color: #d10024;
+    z-index: -1;
+}
+
+.error1-divider {
+    width: 60px;
+    height: 4px;
+    background: #d10024;
+    margin: 20px auto 28px;
+    border-radius: 2px;
+}
+
+.error1-title {
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #1a1a2e;
+    margin-bottom: 16px;
+}
+
+.error1-msg {
     font-size: 14px;
     color: #777;
     line-height: 1.8;

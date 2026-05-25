@@ -9,6 +9,7 @@ import br.ufrn.tads.prova.repository.PersonRepository;
 import br.ufrn.tads.prova.repository.ProductRepository;
 import br.ufrn.tads.prova.repository.YatchRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
@@ -60,7 +61,7 @@ public class HomeServicy {
                 "success",
                 "Compra realizada com sucesso!"
         );
-        return "redirect:/logout";
+        return "redirect:/";
     }
 
     public void addProductToCart(UUID id){
@@ -75,6 +76,17 @@ public class HomeServicy {
                                                       .getYatchsToBuy()
                                                       .size();
     }
+    public Model returnReadyModel(Model model){
+
+        model.addAttribute("toCart",getProductsAmountToCart());
+        model.addAttribute("products",getProductsToCart());
+        model.addAttribute("subtotal", getActualUser()
+                .getProduct()
+                .getSubTotal());
+        return model;
+    }
+
+
     public List<Yatch> getProductsToCart() {
         Person person = getActualUser();
         if(person.getProduct() != null){
