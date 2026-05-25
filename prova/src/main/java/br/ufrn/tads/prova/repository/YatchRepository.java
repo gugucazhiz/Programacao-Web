@@ -13,7 +13,7 @@ public interface YatchRepository extends JpaRepository<Yatch,Long> {
 
     List<Yatch> findAllByIsDeletedIsNull();
 
-    Yatch findById(UUID id);
-
     Yatch getById(UUID id);
+
+    Optional<Yatch> findById(UUID id);
 }

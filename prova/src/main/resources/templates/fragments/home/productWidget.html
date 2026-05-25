@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div th:fragment="product_widget(Yatch)">
+
+<div class="row">
+
+    <!--    repeat 3x times-->
+    <th:block th:each="i : ${#numbers.sequence(1, 3)}">
+
+    <div class="col-md-4 col-xs-6">
+        <div class="section-title">
+            <h4 class="title">Top selling</h4>
+            <div class="section-nav">
+                <div th:id="'slick-nav-' + ${i}" class="products-slick-nav"></div>
+            </div>
+        </div>
+
+        <div class="products-widget-slick" data-nav="#slick-nav-3">
+            <div>
+                <!-- product widget -->
+                <div class="product-widget" th:each="yth : ${Yatch}">
+                    <div class="product-img">
+                        <img th:src="@{/img/{img} (img=${yth.getImagem()})}" alt="">
+                    </div>
+                    <div class="product-body">
+                        <p class="product-category">Category</p>
+                        <h3 class="product-name"><a href="#"th:text="${yth.getName()}">
+
+                        </a></h3>
+                        <h4 class="product-price" th:text="${yth.getPrice()}">
+                            <del class="product-old-price">$990.00</del></h4>
+                    </div>
+                </div>
+                <!-- /product widget -->
+
+            </div>
+        </div>
+    </div>
+    <div class="clearfix visible-sm visible-xs"></div>
+</div>
+        </th:block>
+</div>
+</html>

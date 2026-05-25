@@ -38,10 +38,10 @@
     </head>
 	<body>
 		<!-- HEADER -->
-		<div th:replace="~{fragments/header :: header_global('Checkout')}"></div>
+		<div th:replace="~{fragments/home/header :: header_global('Checkout')}"></div>
 
 		<!-- NAVIGATION -->
-		<div th:replace="~{fragments/nav :: nav_global}"></div>
+		<div th:replace="~{fragments/home/nav :: nav_global}"></div>
 		<!-- /NAVIGATION -->
 
 	<!-- BREADCRUMB -->
@@ -63,7 +63,17 @@
 			<!-- /container -->
 		</div>
 		<!-- /BREADCRUMB -->
+		<!-- SUCCESS -->
+		<div class="alert alert-success"
+		     th:if="${success}"
+		     th:text="${success}">
+		</div>
 
+		<!-- ERROR -->
+		<div class="alert alert-danger"
+		     th:if="${error}"
+		     th:text="${error}">
+		</div>
 		<!-- SECTION -->
 		<div class="section">
 			<!-- container -->
@@ -229,7 +239,16 @@
 								I've read and accept the <a href="#">terms & conditions</a>
 							</label>
 						</div>
-						<a href="#" class="primary-btn order-submit">Place order</a>
+						<form th:action="@{/finalizarCompra}" method="post">
+
+							<button type="submit"
+							        class="primary-btn order-submit">
+
+								Place order
+
+							</button>
+
+						</form>
 					</div>
 					<!-- /Order Details -->
 				</div>
@@ -276,7 +295,7 @@
 		<!-- /NEWSLETTER -->
 
 		<!-- FOOTER -->
-		<div th:replace="~{fragments/footer :: footer_global}"></div>
+		<div th:replace="~{fragments/home/footer :: footer_global}"></div>
 		<!-- /FOOTER -->
 
 		<!-- jQuery Plugins -->

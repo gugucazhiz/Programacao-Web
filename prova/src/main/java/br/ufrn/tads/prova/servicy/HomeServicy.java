@@ -9,10 +9,12 @@ import br.ufrn.tads.prova.repository.PersonRepository;
 import br.ufrn.tads.prova.repository.ProductRepository;
 import br.ufrn.tads.prova.repository.YatchRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HomeServicy {
@@ -36,10 +38,34 @@ public class HomeServicy {
     }
 
 
-    public void addProductToCart(YatchDTO yatchDTO){
-        Yatch yatch= yatchRepository.findById(yatchDTO.getId());
+    public String placeOrder(RedirectAttributes redirectAttributes){
         Person person = getActualUser();
-        productService.addYatchToBuy(yatch,person);
+        Product product = person.getProduct();
+
+        if(product == null || product.getYatchsToBuy().isEmpty()){
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    "Seu carrinho está vazio."
+            );
+
+            return "redirect:/checkout";
+        }
+
+        product.getYatchsToBuy().clear();
+        productRepository.save(product);
+
+        redirectAttributes.addFlashAttribute(
+                "success",
+                "Compra realizada com sucesso!"
+        );
+        return "redirect:/logout";
+    }
+
+    public void addProductToCart(YatchDTO yatchDTO){
+        Optional<Yatch> yatch= yatchRepository.findById(yatchDTO.getId());
+        Person person = getActualUser();
+        productService.addYatchToBuy(yatch.get().getId(), person);
     }
 
     public int getProductsAmountToCart(){

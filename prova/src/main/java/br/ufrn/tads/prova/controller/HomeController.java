@@ -2,15 +2,20 @@ package br.ufrn.tads.prova.controller;
 
 
 import br.ufrn.tads.prova.domain.dto.YatchDTO;
+import br.ufrn.tads.prova.domain.model.Person;
+import br.ufrn.tads.prova.domain.model.Product;
+import br.ufrn.tads.prova.domain.model.Yatch;
 import br.ufrn.tads.prova.servicy.HomeServicy;
 import br.ufrn.tads.prova.servicy.YatchServicy;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.UUID;
 
 @RequestMapping("/")
 @Controller
@@ -68,13 +73,20 @@ public class HomeController {
         return "redirect:/";
     }
 
+    @PostMapping("/finalizarCompra")
+    public String finalizarCompra(
+                                HttpSession session,
+                                RedirectAttributes redirectAttributes) {
+        //testando maneira mais limpa
+          return homeServicy.placeOrder(redirectAttributes);
+        }
 
-
-
-
-    @GetMapping("product")
-    public String getProduct(){
-        return "home/product";
+    @GetMapping("detalhe/{id}")
+    public String getProduct(@PathVariable UUID id,
+                             Model model) {
+        Yatch yatch = yatchServicy.getYatchById(id);
+        model.addAttribute("yatch", yatch);
+        return "home/detalhe";
     }
 
 

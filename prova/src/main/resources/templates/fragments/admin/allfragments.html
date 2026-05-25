@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<div id="header" th:fragment="header_admin">
+    <div class="header-wrap">
+        <a href="/" class="header-logo">A<span>Quatics</span></a>
+        <span class="header-badge"><i class="fa fa-shield"></i> Admin Panel</span>
+        <span class="header-badge" sec:authentication="name"><i class="fa fa-shield"></i></span>
+    </div>
+</div>
+
+<div id="nav" th:fragment="nav_admin">
+    <div class="nav-wrap">
+        <a href="/">Home</a>
+        <a href="/admin" class="active">Admin</a>
+        <a href="/admin/cadastro">Cadastro</a>
+    </div>
+</div>
+</html>

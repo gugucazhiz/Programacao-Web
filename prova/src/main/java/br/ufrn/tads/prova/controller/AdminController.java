@@ -35,7 +35,15 @@ public class AdminController {
         return "/admin/editar";
     }
 
+    @GetMapping("/cadastro")
+    public String cadastroForm(Model model) {
+        Yatch yatch = new Yatch();
 
+        yatch.setImagem(yatchServicy.getImgSorted());
+
+        model.addAttribute("yatch", yatch);
+        return "/admin/cadastro";
+    }
 
     @PostMapping("/salvar")
     public String salvar(@Valid @ModelAttribute("yatch") Yatch yatch,
@@ -43,49 +51,45 @@ public class AdminController {
                          RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            return "/admin/editar";
+            // Volta ao formulário correto conforme operação
+            return yatch.getId() == null ? "/admin/cadastro" : "/admin/editar";
         }
 
+        boolean isNovo = (yatch.getId() == null);
         yatchServicy.save(yatch);
 
-        redirectAttributes.addFlashAttribute("successMessage",
-                "Iate atualizado com sucesso!");
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                isNovo ? "Iate cadastrado com sucesso!" : "Iate atualizado com sucesso!"
+        );
 
         return "redirect:/admin";
     }
 
-    @PostMapping("/restore")
-    public String restore(@Valid @ModelAttribute("yatch") Yatch yatch,
-                         BindingResult bindingResult,
+    @PostMapping("/restore/{id}")
+    public String restore(@PathVariable UUID id,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            return "/admin/editar";
-        }
-
-        yatchServicy.save(yatch);
+        yatchServicy.restore(id);
 
         redirectAttributes.addFlashAttribute("successMessage",
-                "Iate atualizado com sucesso!");
+                "Iate Restaurado com sucesso!");
 
         return "redirect:/admin";
     }
 
-    
-    @PostMapping("/delete")
-    public String delete(@Valid @ModelAttribute("yatch") Yatch yatch,
-                         BindingResult bindingResult,
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable UUID id,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            return "/admin/editar";
-        }
-
-        yatchServicy.save(yatch);
-
+        yatchServicy.deleteYatch(id);
         redirectAttributes.addFlashAttribute("successMessage",
-                "Iate atualizado com sucesso!");
+                "Iate Deletado com sucesso!");
 
         return "redirect:/admin";
     }
+
+
+
 }

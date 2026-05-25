@@ -29,7 +29,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         // Regra Específica: A pasta de CSS é pública (Allowlist)
                         .requestMatchers("/css/**").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/").hasRole("ADMIN")
                         // Regra Geral (Catch-All): Todas as demais exigem autenticação
                         .anyRequest().authenticated()
                 )
@@ -38,6 +39,13 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .defaultSuccessUrl("/", true)
                         .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout") // Rota que aciona o logout
+                        .invalidateHttpSession(true) // Invalida a sessão HTTP
+                        .clearAuthentication(true) // Limpa o contexto de autenticação
+                        .deleteCookies("JSESSIONID") // Deleta o cookie da sessão
+                        .logoutSuccessUrl("/login?logout") // Para onde redirecionar após
                 );
         return http.build();
     }
