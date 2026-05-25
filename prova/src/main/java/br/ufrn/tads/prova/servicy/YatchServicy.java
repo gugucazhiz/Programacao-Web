@@ -4,8 +4,6 @@ import br.ufrn.tads.prova.domain.dto.YatchDTO;
 import br.ufrn.tads.prova.domain.model.Yatch;
 import br.ufrn.tads.prova.exception.RecursoNaoEncontradoException;
 import br.ufrn.tads.prova.repository.YatchRepository;
-import lombok.Getter;
-import org.hibernate.type.descriptor.jdbc.LocalDateTimeJdbcType;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;

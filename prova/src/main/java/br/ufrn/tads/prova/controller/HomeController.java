@@ -36,14 +36,8 @@ public class HomeController {
 
     @GetMapping
     public String getHome(Model model){
+        model = homeServicy.returnReadyModel(model);
         model.addAttribute("Yatch", yatchServicy.getAllOnlyVisibleYatchs());
-        model.addAttribute("toCart",homeServicy.getProductsAmountToCart());
-        model.addAttribute("products",homeServicy.getProductsToCart());
-        model.addAttribute("subtotal",homeServicy
-                                                    .getActualUser()
-                                                    .getProduct()
-                                                    .getSubTotal());
-
         return "home/index";
     }
 
@@ -56,12 +50,7 @@ public class HomeController {
 
     @GetMapping("checkout")
     public String getCheckout(Model model){
-        model.addAttribute("toCart",homeServicy.getProductsAmountToCart());
-        model.addAttribute("products",homeServicy.getProductsToCart());
-        model.addAttribute("subtotal",homeServicy
-                .getActualUser()
-                .getProduct()
-                .getSubTotal());
+        model = homeServicy.returnReadyModel(model);
         return "home/checkout";
     }
 
@@ -79,11 +68,13 @@ public class HomeController {
           return homeServicy.placeOrder(redirectAttributes);
         }
 
-    @GetMapping("detalhe/{id}")
-    public String getProduct(@PathVariable UUID id,
+    @GetMapping("detalhe")
+    public String getProduct(@RequestParam UUID id,
                              Model model) {
+        model = homeServicy.returnReadyModel(model);
         Yatch yatch = yatchServicy.getYatchById(id);
         model.addAttribute("yatch", yatch);
+
         return "home/detalhe";
     }
 

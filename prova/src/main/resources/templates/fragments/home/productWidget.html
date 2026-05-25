@@ -28,7 +28,8 @@
                     </div>
                     <div class="product-body">
                         <p class="product-category">Category</p>
-                        <h3 class="product-name"><a href="#"th:text="${yth.getName()}">
+                        <h3 class="product-name"><a th:href="@{/detalhe/{id} (id=${yth.id})}"
+                                                    th:text="${yth.getName()}">
 
                         </a></h3>
                         <h4 class="product-price" th:text="${yth.getPrice()}">
