@@ -384,7 +384,7 @@
     <!-- Page header -->
     <div class="page-header">
         <h2>Gerenciamento de Itens</h2>
-        <a href="/cadastro" class="btn-primary-red">
+        <a th:href="@{/admin/cadastro}" class="btn-primary-red">
             <i class="fa fa-plus"></i> Novo Cadastro
         </a>
     </div>
@@ -483,18 +483,26 @@
                                 </a>
 
                                 <!-- Deletar (desativado se já deletado) -->
-                                <a th:href="@{/deletar(id=${yatch.id})}"
-                                   th:classappend="${yatch.isDeleted != null} ? ' disabled' : ''"
-                                   class="btn-action btn-delete">
-                                    <i class="fa fa-trash"></i> Deletar
-                                </a>
+                                <form th:action="@{/admin/delete/{id} (id=${yatch.getId()})}"
+                                      method="post">
 
-                                <!-- Restaurar (desativado se não está deletado) -->
-                                <a th:href="@{/restaurar(id=${yatch.id})}"
-                                   th:classappend="${yatch.isDeleted == null} ? ' disabled' : ''"
-                                   class="btn-action btn-restore">
-                                    <i class="fa fa-undo"></i> Restaurar
-                                </a>
+                                    <button type="submit"
+                                            th:classappend="${yatch.isDeleted != null} ? ' disabled' : ''"
+                                            class="btn-action btn-delete"
+                                            th:disabled="${yatch.isDeleted != null}">
+                                            <i class="fa fa-trash" ></i> Deletar
+                                    </button>
+                                </form>
+                                <form th:action="@{/admin/restore/{id} (id=${yatch.getId()})}"
+                                      method="post">
+                                    <!-- Restaurar (desativado se não está deletado) -->
+                                    <button
+                                       th:classappend="${yatch.isDeleted == null} ? ' disabled' : ''"
+                                       th:disabled="${yatch.isDeleted == null}"
+                                       class="btn-action btn-restore">
+                                        <i class="fa fa-undo"></i> Restaurar
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
