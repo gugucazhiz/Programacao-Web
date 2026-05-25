@@ -2,7 +2,6 @@ package br.ufrn.tads.prova.controller;
 
 
 import br.ufrn.tads.prova.domain.dto.YatchDTO;
-import br.ufrn.tads.prova.domain.model.Yatch;
 import br.ufrn.tads.prova.servicy.HomeServicy;
 import br.ufrn.tads.prova.servicy.YatchServicy;
 import jakarta.validation.Valid;
@@ -17,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
-    final YatchServicy yatchServicy;
-    final HomeServicy homeServicy;
+    private final YatchServicy yatchServicy;
+    private final HomeServicy homeServicy;
+
 
     public HomeController(YatchServicy yatchServicy,
                           HomeServicy homeServicy){
@@ -31,6 +31,13 @@ public class HomeController {
     @GetMapping
     public String getHome(Model model){
         model.addAttribute("Yatch", yatchServicy.getAllOnlyVisibleYatchs());
+        model.addAttribute("toCart",homeServicy.getProductsAmountToCart());
+        model.addAttribute("products",homeServicy.getProductsToCart());
+        model.addAttribute("subtotal",homeServicy
+                                                    .getActualUser()
+                                                    .getProduct()
+                                                    .getSubTotal());
+
         return "home/index";
     }
 
@@ -42,18 +49,23 @@ public class HomeController {
 
 
     @GetMapping("checkout")
-    public String getCheckout(){
+    public String getCheckout(Model model){
+        model.addAttribute("toCart",homeServicy.getProductsAmountToCart());
+        model.addAttribute("products",homeServicy.getProductsToCart());
+        model.addAttribute("subtotal",homeServicy
+                .getActualUser()
+                .getProduct()
+                .getSubTotal());
         return "home/checkout";
     }
-    @PostMapping
+
+    @PostMapping("/addToCheckout")
     public String addToCheckout(@Valid YatchDTO yatchDTO, BindingResult result){
         if(result.hasErrors()){
-            return "/";
+            return "redirect:/";
         }
-
-
         homeServicy.addProductToCart(yatchDTO);
-        return "/";
+        return "redirect:/";
     }
 
 

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>AQuatics - Admin Panel</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700" rel="stylesheet">
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* ── HEADER ── */
+        #header {
+            background: #1a1a2e;
+            padding: 0;
+            border-bottom: 3px solid #d10024;
+        }
+
+        .header-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 20px;
+        }
+
+        .header-logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .header-logo span { color: #d10024; }
+
+        .header-badge {
+            background: #d10024;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 2px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ── NAV ── */
+        #nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .nav-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-wrap a {
+            display: inline-block;
+            padding: 16px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            transition: color .2s;
+        }
+
+        .nav-wrap a:hover { color: #d10024; }
+        .nav-wrap a.active { color: #d10024; border-bottom: 2px solid #d10024; }
+
+        /* ── MAIN ── */
+        .admin-wrap {
+            max-width: 1200px;
+            margin: 36px auto 60px;
+            padding: 0 20px;
+        }
+
+        /* Page title bar */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .page-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-header h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 24px;
+            background: #d10024;
+            border-radius: 2px;
+        }
+
+        /* CTA button */
+        .btn-primary-red {
+            background: #d10024;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 11px 22px;
+            border: none;
+            border-radius: 3px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background .2s, transform .15s;
+            cursor: pointer;
+        }
+
+        .btn-primary-red:hover {
+            background: #a8001c;
+            transform: translateY(-1px);
+        }
+
+        /* Stats strip */
+        .stats-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 4px;
+            padding: 18px 22px;
+            border-left: 4px solid #d10024;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .stat-card .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a2e;
+            line-height: 1;
+        }
+
+        .stat-card .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .stat-card.deleted { border-left-color: #999; }
+        .stat-card.deleted .stat-number { color: #999; }
+
+        /* Table card */
+        .table-card {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .table-card-header {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 14px 22px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .table-card-header i { color: #d10024; }
+
+        /* Table */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .admin-table thead th {
+            background: #f0f0f0;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #555;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .admin-table tbody tr {
+            border-bottom: 1px solid #f0f0f0;
+            transition: background .15s;
+        }
+
+        .admin-table tbody tr:hover { background: #fafafa; }
+
+        /* deleted row */
+        .admin-table tbody tr.row-deleted {
+            background: #fef8f8;
+            opacity: .85;
+        }
+
+        .admin-table tbody tr.row-deleted:hover { background: #fee; }
+
+        .admin-table td {
+            padding: 14px 16px;
+            vertical-align: middle;
+            color: #444;
+        }
+
+        /* ID cell */
+        .td-id {
+            font-weight: 700;
+            color: #1a1a2e;
+            font-size: 12px;
+        }
+
+        /* Status badge */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .badge-active   { background: #e6f7ee; color: #1a8a4a; }
+        .badge-deleted  { background: #fce8e8; color: #c0392b; }
+
+        /* Action buttons */
+        .action-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 3px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background .2s, transform .1s;
+            white-space: nowrap;
+        }
+
+        .btn-action:hover { transform: translateY(-1px); }
+
+        .btn-edit    { background: #1a1a2e; color: #fff; }
+        .btn-edit:hover { background: #2e2e50; }
+
+        .btn-delete  { background: #d10024; color: #fff; }
+        .btn-delete:hover { background: #a8001c; }
+
+        .btn-restore { background: #1a8a4a; color: #fff; }
+        .btn-restore:hover { background: #146b39; }
+
+        /* Disabled (already deleted) */
+        .btn-action.disabled {
+            opacity: .4;
+            pointer-events: none;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #aaa;
+        }
+
+        .empty-state i { font-size: 40px; margin-bottom: 14px; display: block; }
+        .empty-state p { font-size: 14px; font-weight: 500; }
+
+        /* ── FOOTER ── */
+        #footer {
+            background: #1a1a2e;
+            color: #aaa;
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 12px;
+            letter-spacing: .5px;
+            margin-top: 60px;
+        }
+
+        #footer span { color: #d10024; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-table thead { display: none; }
+            .admin-table tbody tr { display: block; padding: 12px 0; }
+            .admin-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 6px 16px;
+            }
+            .admin-table td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                font-size: 10px;
+                text-transform: uppercase;
+                color: #888;
+                margin-right: 10px;
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div id="header">
+    <div class="header-wrap">
+        <a href="/" class="header-logo">A<span>Quatics</span></a>
+        <span class="header-badge"><i class="fa fa-shield"></i> Admin Panel</span>
+    </div>
+</div>
+
+<!-- ── NAV ── -->
+<div id="nav">
+    <div class="nav-wrap">
+        <a href="/">Home</a>
+        <a href="/admin" class="active">Admin</a>
+        <a href="/cadastro">Cadastro</a>
+    </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="admin-wrap">
+
+    <!-- Page header -->
+    <div class="page-header">
+        <h2>Gerenciamento de Itens</h2>
+        <a href="/cadastro" class="btn-primary-red">
+            <i class="fa fa-plus"></i> Novo Cadastro
+        </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-strip">
+        <div class="stat-card">
+            <div class="stat-number" th:text="${#lists.size(Yatch)}">0</div>
+            <div class="stat-label">Total de Itens</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number"
+                 th:text="${#lists.size(Yatch.?[isDeleted == null])}">0</div>
+            <div class="stat-label">Itens Ativos</div>
+        </div>
+        <div class="stat-card deleted">
+            <div class="stat-number"
+                 th:text="${#lists.size(Yatch.?[isDeleted != null])}">0</div>
+            <div class="stat-label">Itens Deletados</div>
+        </div>
+    </div>
+
+    <!-- Table card -->
+    <div class="table-card">
+        <div class="table-card-header">
+            <i class="fa fa-table"></i> Todos os Itens (incluindo deletados)
+        </div>
+
+        <!-- Empty state -->
+        <div class="empty-state" th:if="${#lists.isEmpty(Yatch)}">
+            <i class="fa fa-inbox"></i>
+            <p>Nenhum item encontrado no banco de dados.</p>
+        </div>
+
+        <!-- Table -->
+        <div th:unless="${#lists.isEmpty(Yatch)}">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>#ID</th>
+                        <th>Nome</th>
+                        <th>Cód. Produto</th>
+                        <th>Cor</th>
+                        <th>Preço</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="yatch : ${Yatch}"
+                        th:classappend="${yatch.isDeleted != null} ? 'row-deleted' : ''">
+
+                        <td class="td-id" data-label="ID"
+                            th:text="'#' + ${yatch.id}">
+                            #001
+                        </td>
+
+                        <td data-label="Nome"
+                            th:text="${yatch.name}">
+                            Nome do Iate
+                        </td>
+
+                        <td data-label="Cód. Produto"
+                            th:text="${yatch.codProduct}">
+                            PROD-0000
+                        </td>
+
+                        <td data-label="Cor"
+                            th:text="${yatch.color}">
+                            Cor
+                        </td>
+
+                        <td data-label="Preço"
+                            th:text="${'R$ ' + #numbers.formatDecimal(yatch.price, 1, 'POINT', 2, 'COMMA')}">
+                            R$ 0,00
+                        </td>
+
+                        <td data-label="Status">
+                            <span th:if="${yatch.isDeleted == null}"
+                                  class="badge badge-active">
+                                <i class="fa fa-check"></i> Ativo
+                            </span>
+                            <span th:if="${yatch.isDeleted != null}"
+                                  class="badge badge-deleted">
+                                <i class="fa fa-times"></i> Deletado
+                            </span>
+                        </td>
+
+                        <td data-label="Ações">
+                            <div class="action-group">
+                                <!-- Editar -->
+                                <a th:href="@{/admin/editar(id=${yatch.id})}"
+                                   th:classappend="${yatch.isDeleted != null} ? ' disabled' : ''"
+                                   class="btn-action btn-edit">
+                                    <i class="fa fa-pencil"></i> Editar
+                                </a>
+
+                                <!-- Deletar (desativado se já deletado) -->
+                                <a th:href="@{/deletar(id=${yatch.id})}"
+                                   th:classappend="${yatch.isDeleted != null} ? ' disabled' : ''"
+                                   class="btn-action btn-delete">
+                                    <i class="fa fa-trash"></i> Deletar
+                                </a>
+
+                                <!-- Restaurar (desativado se não está deletado) -->
+                                <a th:href="@{/restaurar(id=${yatch.id})}"
+                                   th:classappend="${yatch.isDeleted == null} ? ' disabled' : ''"
+                                   class="btn-action btn-restore">
+                                    <i class="fa fa-undo"></i> Restaurar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<div th:replace="~{fragments/footer :: footer_global}"></div>
+
+</body>
+</html>

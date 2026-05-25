@@ -5,6 +5,7 @@ import br.ufrn.tads.prova.domain.model.Person;
 import br.ufrn.tads.prova.domain.model.Product;
 import br.ufrn.tads.prova.domain.model.Yatch;
 import br.ufrn.tads.prova.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,12 +17,8 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public Product addYatchToBuy(Yatch yatch,Person person){
-        if(person.getProduct() == null){
-            Product product = new Product(yatch);
-            person.setProduct(product);
-            return productRepository.save(product);
-        }
         Product product = productRepository.findProductById(person.getProduct().getId());
         product.setYatchsToBuy(yatch);
 

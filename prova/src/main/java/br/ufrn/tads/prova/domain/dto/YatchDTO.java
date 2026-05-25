@@ -11,6 +11,5 @@ import java.util.UUID;
 @Getter
 public class YatchDTO {
 
-    @NotBlank
     public UUID id;
 }

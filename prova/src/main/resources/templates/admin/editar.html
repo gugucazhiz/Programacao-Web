@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>AQuatics - Editar Iate</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* ── HEADER ── */
+        #header {
+            background: #1a1a2e;
+            border-bottom: 3px solid #d10024;
+        }
+
+        .header-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 20px;
+        }
+
+        .header-logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .header-logo span { color: #d10024; }
+
+        .header-badge {
+            background: #d10024;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 2px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ── NAV ── */
+        #nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .nav-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-wrap a {
+            display: inline-block;
+            padding: 16px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            transition: color .2s;
+        }
+
+        .nav-wrap a:hover  { color: #d10024; }
+        .nav-wrap a.active { color: #d10024; border-bottom: 2px solid #d10024; }
+
+        /* ── MAIN ── */
+        .edit-wrap {
+            max-width: 760px;
+            margin: 40px auto 60px;
+            padding: 0 20px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb a { color: #d10024; text-decoration: none; font-weight: 600; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb i { font-size: 10px; }
+
+        /* Page title */
+        .page-title {
+            font-size: 22px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .page-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 24px;
+            background: #d10024;
+            border-radius: 2px;
+        }
+
+        /* ── SUCCESS / ERROR ALERT ── */
+        .alert {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border-radius: 3px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .alert-error {
+            background: #fce8e8;
+            color: #c0392b;
+            border-left: 4px solid #c0392b;
+        }
+
+        /* ── FORM CARD ── */
+        .form-card {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .form-card-header {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 14px 24px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-card-header i { color: #d10024; }
+
+        .form-body {
+            padding: 32px 24px;
+        }
+
+        /* Grid de campos */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full { grid-column: 1 / -1; }
+
+        label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            color: #555;
+        }
+
+        label .required { color: #d10024; margin-left: 2px; }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="url"],
+        select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            color: #333;
+            background: #fafafa;
+            transition: border-color .2s, box-shadow .2s;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #d10024;
+            box-shadow: 0 0 0 3px rgba(209,0,36,0.08);
+            background: #fff;
+        }
+
+        /* Campo com erro */
+        input.field-error, select.field-error {
+            border-color: #c0392b;
+            background: #fff8f8;
+        }
+
+        /* Mensagem de erro Thymeleaf */
+        .error-msg {
+            font-size: 11px;
+            color: #c0392b;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Toggle status */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background: #fafafa;
+        }
+
+        .toggle-group label {
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
+            color: #444;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        input[type="checkbox"] { width: 16px; height: 16px; accent-color: #d10024; }
+
+        /* Divider */
+        .form-divider {
+            grid-column: 1 / -1;
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 4px 0;
+        }
+
+        /* ID read-only */
+        input[readonly] {
+            background: #f0f0f0;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        /* Footer actions */
+        .form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 20px 24px;
+            border-top: 1px solid #eee;
+            background: #fafafa;
+            flex-wrap: wrap;
+        }
+
+        .btn-cancel {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 11px 22px;
+            background: transparent;
+            border: 2px solid #1a1a2e;
+            border-radius: 3px;
+            color: #1a1a2e;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .btn-cancel:hover {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .btn-save {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 11px 28px;
+            background: #d10024;
+            border: 2px solid #d10024;
+            border-radius: 3px;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .btn-save:hover {
+            background: #a8001c;
+            border-color: #a8001c;
+            transform: translateY(-1px);
+        }
+
+        /* ── FOOTER ── */
+        #footer {
+            background: #1a1a2e;
+            color: #aaa;
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 12px;
+            letter-spacing: .5px;
+        }
+
+        #footer span { color: #d10024; }
+
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full { grid-column: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div id="header">
+    <div class="header-wrap">
+        <a href="/" class="header-logo">A<span>Quatics</span></a>
+        <span class="header-badge"><i class="fa fa-pencil"></i> Editar Item</span>
+    </div>
+</div>
+
+<!-- ── NAV ── -->
+<div id="nav">
+    <div class="nav-wrap">
+        <a href="/">Home</a>
+        <a href="/admin" class="active">Admin</a>
+        <a href="/cadastro">Cadastro</a>
+    </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="edit-wrap">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="/admin"><i class="fa fa-arrow-left"></i> Voltar para Admin</a>
+        <i class="fa fa-chevron-right"></i>
+        <span>Editar Iate</span>
+    </div>
+
+    <div class="page-title">Editar Iate</div>
+
+    <!-- Formulário — POST para /salvar -->
+    <div class="form-card">
+        <div class="form-card-header">
+            <i class="fa fa-edit"></i>
+            Dados do Iate &mdash;
+            <span th:text="'ID: ' + ${yatch.id}" style="font-weight:400; font-size:12px; opacity:.7;">ID</span>
+        </div>
+
+        <form th:action="@{/admin/salvar}"
+              th:object="${yatch}"
+              method="post"
+              novalidate>
+
+            <!-- Alerta de erros globais de validação -->
+            <div class="alert alert-error"
+                 th:if="${#fields.hasAnyErrors()}">
+                <i class="fa fa-exclamation-circle"></i>
+                Verifique os campos destacados e corrija os erros antes de salvar.
+            </div>
+
+            <!-- Campo oculto com o ID para o controller identificar o registro -->
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-body">
+                <div class="form-grid">
+
+                    <!-- Nome -->
+                    <div class="form-group">
+                        <label for="name">Nome <span class="required">*</span></label>
+                        <input type="text"
+                               id="name"
+                               th:field="*{name}"
+                               th:classappend="${#fields.hasErrors('name')} ? 'field-error'"
+                               placeholder="Ex: Sea Ray 320" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('name')}"
+                              th:errors="*{name}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <!-- Código do Produto -->
+                    <div class="form-group">
+                        <label for="codProduct">Cód. Produto <span class="required">*</span></label>
+                        <input type="text"
+                               id="codProduct"
+                               th:field="*{codProduct}"
+                               th:classappend="${#fields.hasErrors('codProduct')} ? 'field-error'"
+                               placeholder="Ex: PROD-0001" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('codProduct')}"
+                              th:errors="*{codProduct}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <!-- Cor -->
+                    <div class="form-group">
+                        <label for="color">Cor <span class="required">*</span></label>
+                        <input type="text"
+                               id="color"
+                               th:field="*{color}"
+                               th:classappend="${#fields.hasErrors('color')} ? 'field-error'"
+                               placeholder="Ex: Branco Perolado" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('color')}"
+                              th:errors="*{color}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <!-- Preço -->
+                    <div class="form-group">
+                        <label for="price">Preço (R$) <span class="required">*</span></label>
+                        <input type="number"
+                               id="price"
+                               th:field="*{price}"
+                               th:classappend="${#fields.hasErrors('price')} ? 'field-error'"
+                               placeholder="Ex: 150000.00"
+                               step="0.01"
+                               min="0" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('price')}"
+                              th:errors="*{price}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <hr class="form-divider" />
+
+                    <!-- Imagem (URL) -->
+                    <div class="form-group full">
+                        <label for="imagem">URL da Imagem <span class="required">*</span></label>
+                        <input type="text"
+                               id="imagem"
+                               th:field="*{imagem}"
+                               th:classappend="${#fields.hasErrors('imagem')} ? 'field-error'"
+                               placeholder="Ex: /img/yatch01.png" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('imagem')}"
+                              th:errors="*{imagem}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="toggle-group">
+                            <input type="checkbox"
+                                   id="status"
+                                   th:field="*{status}" />
+                            <label for="status">Disponível para venda</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="form-actions">
+                <a href="/admin" class="btn-cancel">
+                    <i class="fa fa-times"></i> Cancelar
+                </a>
+                <button type="submit" class="btn-save">
+                    <i class="fa fa-save"></i> Salvar Alterações
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<div id="footer">
+    &copy; 2024 <span>AQuatics</span> &mdash; Painel Administrativo
+</div>
+
+</body>
+</html>

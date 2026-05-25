@@ -5,6 +5,7 @@ import br.ufrn.tads.prova.repository.YatchRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class YatchServicy {
@@ -22,5 +23,14 @@ public class YatchServicy {
     public List<Yatch> getAllOnlyVisibleYatchs(){
         return yatchRepository.findAllByIsDeletedIsNull();
     }
+
+    public Yatch getYatchById(UUID id){
+        return yatchRepository.getById(id);
+    }
+
+    public void save(Yatch yatch){
+        yatchRepository.save(yatch);
+    }
+
 
 }

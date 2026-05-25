@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class Yatch {
     @GeneratedValue (strategy =GenerationType.AUTO)
     private UUID id;
 
-    private Double price;
+    private BigDecimal price;
 
     @NotBlank
     private String name;
