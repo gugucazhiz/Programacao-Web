@@ -1,11 +1,14 @@
 package br.ufrn.tads.prova.servicy;
 
+import br.ufrn.tads.prova.domain.dto.YatchDTO;
 import br.ufrn.tads.prova.domain.model.Yatch;
 import br.ufrn.tads.prova.exception.RecursoNaoEncontradoException;
 import br.ufrn.tads.prova.repository.YatchRepository;
 import lombok.Getter;
 import org.hibernate.type.descriptor.jdbc.LocalDateTimeJdbcType;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,8 +52,30 @@ public class YatchServicy {
                 ));
     }
 
-    public void save(Yatch yatch){
+    public String save(YatchDTO yatchDTO,
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes){
+        Yatch yatch = new Yatch(yatchDTO.getId(),
+                yatchDTO.getName(),
+                yatchDTO.getColor(),
+                yatchDTO.getImagem(),
+                yatchDTO.getCodProduct());
+
+        if (bindingResult.hasErrors()) {
+            return yatch.getId() == null ? "/admin/cadastro" : "/admin/editar";
+        }
+
+        boolean isNovo = (yatch.getId() == null);
         yatchRepository.save(yatch);
+
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                isNovo ? "Iate cadastrado com sucesso!" : "Iate atualizado com sucesso!"
+        );
+
+
+        return "redirect:/admin";
+
     }
 
     public String getImgSorted(){

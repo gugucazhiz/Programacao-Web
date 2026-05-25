@@ -20,6 +20,21 @@ import java.util.UUID;
 @Entity
 public class Yatch {
 
+    public Yatch(){
+
+    }
+    public Yatch(UUID id,
+                 String name,
+                 String color,
+                 String imagem,
+                 String codProduct){
+        this.id=id;
+        this.name=name;
+        this.color=color;
+        this.imagem=imagem;
+        this.codProduct=codProduct;
+    }
+
     @Id
     @GeneratedValue (strategy =GenerationType.AUTO)
     private UUID id;

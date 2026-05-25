@@ -11,11 +11,8 @@ import java.util.UUID;
 
 @Setter
 @Getter
-@Entity
 public class UserDTO {
 
-    @Id
-    @GeneratedValue
     private UUID id;
 
     private String username;

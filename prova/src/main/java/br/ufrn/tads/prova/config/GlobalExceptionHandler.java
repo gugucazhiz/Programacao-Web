@@ -5,14 +5,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.nio.file.AccessDeniedException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Intercepta RecursoNaoEncontradoException em qualquer controller
     @ExceptionHandler(RecursoNaoEncontradoException.class)
     public String handleRecursoNaoEncontrado(RecursoNaoEncontradoException ex,
                                              Model model) {
         model.addAttribute("erro", ex.getMessage());
-        return "erro-404"; // → templates/erro-404.html  (página de erro amigável)
+        return "/error/404";
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public String handleAcessDenied(AccessDeniedException ex,
+                                             Model model) {
+        model.addAttribute("erro", ex.getMessage());
+        return "/error/403";
     }
 }

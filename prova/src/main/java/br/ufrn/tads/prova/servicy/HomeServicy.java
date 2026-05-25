@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class HomeServicy {
@@ -62,8 +63,8 @@ public class HomeServicy {
         return "redirect:/logout";
     }
 
-    public void addProductToCart(YatchDTO yatchDTO){
-        Optional<Yatch> yatch= yatchRepository.findById(yatchDTO.getId());
+    public void addProductToCart(UUID id){
+        Optional<Yatch> yatch= yatchRepository.findById(id);
         Person person = getActualUser();
         productService.addYatchToBuy(yatch.get().getId(), person);
     }

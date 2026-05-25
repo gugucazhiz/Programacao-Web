@@ -2,6 +2,7 @@ package br.ufrn.tads.prova.controller;
 
 
 import br.ufrn.tads.prova.domain.dto.YatchDTO;
+import br.ufrn.tads.prova.domain.dto.YatchForms;
 import br.ufrn.tads.prova.domain.model.Person;
 import br.ufrn.tads.prova.domain.model.Product;
 import br.ufrn.tads.prova.domain.model.Yatch;
@@ -64,12 +65,9 @@ public class HomeController {
         return "home/checkout";
     }
 
-    @PostMapping("/addToCheckout")
-    public String addToCheckout(@Valid YatchDTO yatchDTO, BindingResult result){
-        if(result.hasErrors()){
-            return "redirect:/";
-        }
-        homeServicy.addProductToCart(yatchDTO);
+    @PostMapping("/addToCheckout/{id}")
+    public String addToCheckout(@PathVariable UUID id){
+        homeServicy.addProductToCart(id);
         return "redirect:/";
     }
 

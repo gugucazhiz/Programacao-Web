@@ -33,12 +33,13 @@
                 <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
             </div>
         </div>
-        <form th:action="@{/addToCheckout}" method="post">
+        <form th:action="@{/addToCheckout/{id} (id=${yh2.Id})}" method="post">
             <!--        e necessario o csrf para o post ser autorizado pelo spring security-->
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
             <div class="add-to-cart">
-                    <input type="hidden" name="id" th:value="${yh2.getId()}"/>
+<!--                vou passar como path ao inves de usar o YatchForms-->
+<!--                    <input type="hidden" name="id" th:value="${yh2.getId()}"/>-->
                     <button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart">
                         </i> add to cart</button>
             </div>
