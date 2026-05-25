@@ -12,6 +12,7 @@ import lombok.Setter;
 
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,12 +28,14 @@ public class Yatch {
                  String name,
                  String color,
                  String imagem,
-                 String codProduct){
+                 String codProduct,
+                 BigDecimal price){
         this.id=id;
         this.name=name;
         this.color=color;
         this.imagem=imagem;
         this.codProduct=codProduct;
+        this.price = price;
     }
 
     @Id

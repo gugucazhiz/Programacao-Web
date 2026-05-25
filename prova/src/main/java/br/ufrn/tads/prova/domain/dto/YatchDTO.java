@@ -6,17 +6,20 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Setter
 @Getter
 public class YatchDTO {
 
-    @NotBlank
+
     private UUID id;
 
     @NotBlank
     private String name;
+
+    private BigDecimal price;
 
     @NotBlank
     private String color;

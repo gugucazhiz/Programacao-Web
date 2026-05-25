@@ -55,11 +55,13 @@ public class YatchServicy {
     public String save(YatchDTO yatchDTO,
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes){
+
         Yatch yatch = new Yatch(yatchDTO.getId(),
                 yatchDTO.getName(),
                 yatchDTO.getColor(),
                 yatchDTO.getImagem(),
-                yatchDTO.getCodProduct());
+                yatchDTO.getCodProduct(),
+                yatchDTO.getPrice());
 
         if (bindingResult.hasErrors()) {
             return yatch.getId() == null ? "/admin/cadastro" : "/admin/editar";
@@ -81,7 +83,6 @@ public class YatchServicy {
     public String getImgSorted(){
         String imagemSorted = getIMAGENS_DISPONIVEIS
                 .get(new Random().nextInt(getIMAGENS_DISPONIVEIS.size()));
-        System.out.println(imagemSorted);
         String result = imagemSorted.substring(imagemSorted.lastIndexOf("/") + 1);
         return  result;
     }
