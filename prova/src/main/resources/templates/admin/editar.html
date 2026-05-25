@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>AQuatics - Editar Iate</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/bootstrap.min.css}"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/slick.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/slick-theme.css}"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/nouislider.min.css}"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" th:href="@{/css/home/font-awesome.min.css}">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/style.css}"/>
+
+    <!-- Custom stlylesheet2 -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/admin/editarStyle.css}"/>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div th:replace="~{fragments/admin/allfragments :: header_admin}"></div>
+<!-- ── NAV ── -->
+<div th:replace="~{fragments/admin/allfragments :: nav_admin}"></div>
+
+<!-- ── MAIN ── -->
+<div class="edit-wrap">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="/admin"><i class="fa fa-arrow-left"></i> Voltar para Admin</a>
+        <i class="fa fa-chevron-right"></i>
+        <span>Editar Iate</span>
+    </div>
+
+    <div class="page-title">Editar Iate</div>
+
+    <!-- Formulário — POST para /salvar -->
+    <div class="form-card">
+        <div class="form-card-header">
+            <i class="fa fa-edit"></i>
+            Dados do Iate &mdash;
+            <span th:text="'ID: ' + ${yatch.id}" style="font-weight:400; font-size:12px; opacity:.7;">ID</span>
+        </div>
+
+        <form th:action="@{/admin/salvar}"
+              th:object="${yatch}"
+              method="post"
+              novalidate>
+
+            <!-- Alerta de erros globais de validação -->
+            <div class="alert alert-error"
+                 th:if="${#fields.hasAnyErrors()}">
+                <i class="fa fa-exclamation-circle"></i>
+                Verifique os campos destacados e corrija os erros antes de salvar.
+            </div>
+
+            <!-- Campo oculto com o ID para o controller identificar o registro -->
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-body">
+                <div class="form-grid">
+
+                    <!-- Nome -->
+                    <div class="form-group">
+                        <label for="name">Nome <span class="required">*</span></label>
+                        <input type="text"
+                               id="name"
+                               th:field="*{name}"
+                               th:classappend="${#fields.hasErrors('name')} ? 'field-error'"
+                               placeholder="Ex: Sea Ray 320" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('name')}"
+                              th:errors="*{name}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <!-- Código do Produto -->
+                    <div class="form-group">
+                        <label for="codProduct">Cód. Produto <span class="required">*</span></label>
+                        <input type="text"
+                               id="codProduct"
+                               th:field="*{codProduct}"
+                               th:classappend="${#fields.hasErrors('codProduct')} ? 'field-error'"
+                               placeholder="Ex: PROD-0001" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('codProduct')}"
+                              th:errors="*{codProduct}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <!-- Cor -->
+                    <div class="form-group">
+                        <label for="color">Cor <span class="required">*</span></label>
+                        <input type="text"
+                               id="color"
+                               th:field="*{color}"
+                               th:classappend="${#fields.hasErrors('color')} ? 'field-error'"
+                               placeholder="Ex: Branco Perolado" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('color')}"
+                              th:errors="*{color}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <!-- Preço -->
+                    <div class="form-group">
+                        <label for="price">Preço (R$) <span class="required">*</span></label>
+                        <input type="number"
+                               id="price"
+                               th:field="*{price}"
+                               th:classappend="${#fields.hasErrors('price')} ? 'field-error'"
+                               placeholder="Ex: 150000.00"
+                               step="0.01"
+                               min="0" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('price')}"
+                              th:errors="*{price}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <hr class="form-divider" />
+
+                    <!-- Imagem (URL) -->
+                    <div class="form-group full">
+                        <label for="imagem">URL da Imagem <span class="required">*</span></label>
+                        <input type="text"
+                               id="imagem"
+                               th:field="*{imagem}"
+                               th:classappend="${#fields.hasErrors('imagem')} ? 'field-error'"
+                               placeholder="Ex: /img/yatch01.png" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('imagem')}"
+                              th:errors="*{imagem}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="toggle-group">
+                            <input type="checkbox"
+                                   id="status"
+                                   th:field="*{status}" />
+                            <label for="status">Disponível para venda</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="form-actions">
+                <a href="/admin" class="btn-cancel">
+                    <i class="fa fa-times"></i> Cancelar
+                </a>
+                <button type="submit" class="btn-save">
+                    <i class="fa fa-save"></i> Salvar Alterações
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<div th:replace="~{fragments/home/footer :: footer_global}"></div>
+
+</body>
+</html>

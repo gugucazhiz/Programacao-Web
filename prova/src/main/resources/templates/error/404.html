@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>AQuatics - Página não encontrada</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/bootstrap.min.css}"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/slick.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/slick-theme.css}"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/nouislider.min.css}"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" th:href="@{/css/home/font-awesome.min.css}">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/style.css}"/>
+
+    <!-- Custom stlylesheet2 -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/error.css}"/>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div th:replace="~{fragments/admin/allfragments :: header_admin}"></div>
+<!-- ── NAV ── -->
+<div th:replace="~{fragments/admin/allfragments :: nav_admin}"></div>
+
+    <!-- ── ERRO 404 ── -->
+    <div class="error-section">
+        <div class="error-box">
+
+            <div class="error-code">404</div>
+
+            <div class="error-divider"></div>
+
+            <h1 class="error-title">Página não encontrada</h1>
+
+            <p class="error-msg">
+                A página que você está procurando não existe,<br>
+                foi removida ou o endereço foi digitado incorretamente.
+            </p>
+
+            <div class="error-actions">
+                <a href="/" class="btn-home">
+                    <i class="fa fa-home"></i> Ir para Home
+                </a>
+                <a href="javascript:history.back()" class="btn-back">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </a>
+            </div>
+
+            <div class="quick-links">
+                <p>Ou acesse diretamente</p>
+                <ul>
+                    <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="/admin"><i class="fa fa-shield"></i> Admin</a></li>
+                    <li><a href="/admin/cadastro"><i class="fa fa-plus"></i> Cadastro</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+<div th:replace="~{fragments/home/footer :: footer_global }"></div>
+</body>
+</html>

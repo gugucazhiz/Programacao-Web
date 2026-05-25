@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>AQuatics - Admin Panel</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700" rel="stylesheet">
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/bootstrap.min.css}"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/slick.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/slick-theme.css}"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/nouislider.min.css}"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" th:href="@{/css/home/font-awesome.min.css}">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/style.css}"/>
+
+    <!-- Custom stlylesheet2 -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/admin/style.css}"/>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div th:replace="~{fragments/admin/allfragments :: header_admin}"></div>
+<!-- ── NAV ── -->
+<div th:replace="~{fragments/admin/allfragments :: nav_admin}"></div>
+
+<!-- ── MAIN ── -->
+<div class="admin-wrap">
+
+    <!-- Page header -->
+    <div class="page-header">
+        <h2>Gerenciamento de Itens</h2>
+        <a th:href="@{/admin/cadastro}" class="btn-primary-red">
+            <i class="fa fa-plus"></i> Novo Cadastro
+        </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-strip">
+        <div class="stat-card">
+            <div class="stat-number" th:text="${#lists.size(Yatch)}">0</div>
+            <div class="stat-label">Total de Itens</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number"
+                 th:text="${#lists.size(Yatch.?[isDeleted == null])}">0</div>
+            <div class="stat-label">Itens Ativos</div>
+        </div>
+        <div class="stat-card deleted">
+            <div class="stat-number"
+                 th:text="${#lists.size(Yatch.?[isDeleted != null])}">0</div>
+            <div class="stat-label">Itens Deletados</div>
+        </div>
+    </div>
+
+    <!-- Table card -->
+    <div class="table-card">
+        <div class="table-card-header">
+            <i class="fa fa-table"></i> Todos os Itens (incluindo deletados)
+        </div>
+
+        <!-- Empty state -->
+        <div class="empty-state" th:if="${#lists.isEmpty(Yatch)}">
+            <i class="fa fa-inbox"></i>
+            <p>Nenhum item encontrado no banco de dados.</p>
+        </div>
+
+        <!-- Table -->
+        <div th:unless="${#lists.isEmpty(Yatch)}">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>#ID</th>
+                        <th>Nome</th>
+                        <th>Cód. Produto</th>
+                        <th>Cor</th>
+                        <th>Preço</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="yatch : ${Yatch}"
+                        th:classappend="${yatch.isDeleted != null} ? 'row-deleted' : ''">
+
+                        <td class="td-id" data-label="ID"
+                            th:text="'#' + ${yatch.id}">
+                            #001
+                        </td>
+
+                        <td data-label="Nome"
+                            th:text="${yatch.name}">
+                            Nome do Iate
+                        </td>
+
+                        <td data-label="Cód. Produto"
+                            th:text="${yatch.codProduct}">
+                            PROD-0000
+                        </td>
+
+                        <td data-label="Cor"
+                            th:text="${yatch.color}">
+                            Cor
+                        </td>
+
+                        <td data-label="Preço"
+                            th:text="${'R$ ' + #numbers.formatDecimal(yatch.price, 1, 'POINT', 2, 'COMMA')}">
+                            R$ 0,00
+                        </td>
+
+                        <td data-label="Status">
+                            <span th:if="${yatch.isDeleted == null}"
+                                  class="badge badge-active">
+                                <i class="fa fa-check"></i> Ativo
+                            </span>
+                            <span th:if="${yatch.isDeleted != null}"
+                                  class="badge badge-deleted">
+                                <i class="fa fa-times"></i> Deletado
+                            </span>
+                        </td>
+
+                        <td data-label="Ações">
+                            <div class="action-group">
+                                <!-- Editar -->
+                                <a th:href="@{/admin/editar(id=${yatch.id})}"
+                                   th:classappend="${yatch.isDeleted != null} ? ' disabled' : ''"
+                                   class="btn-action btn-edit">
+                                    <i class="fa fa-pencil"></i> Editar
+                                </a>
+
+                                <!-- Deletar (desativado se já deletado) -->
+                                <form th:action="@{/admin/delete/{id} (id=${yatch.getId()})}"
+                                      method="post">
+
+                                    <button type="submit"
+                                            th:classappend="${yatch.isDeleted != null} ? ' disabled' : ''"
+                                            class="btn-action btn-delete"
+                                            th:disabled="${yatch.isDeleted != null}">
+                                            <i class="fa fa-trash" ></i> Deletar
+                                    </button>
+                                </form>
+                                <form th:action="@{/admin/restore/{id} (id=${yatch.getId()})}"
+                                      method="post">
+                                    <!-- Restaurar (desativado se não está deletado) -->
+                                    <button
+                                       th:classappend="${yatch.isDeleted == null} ? ' disabled' : ''"
+                                       th:disabled="${yatch.isDeleted == null}"
+                                       class="btn-action btn-restore">
+                                        <i class="fa fa-undo"></i> Restaurar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<div th:replace="~{fragments/home/footer :: footer_global}"></div>
+
+</body>
+</html>

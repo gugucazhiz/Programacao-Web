@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="product_global(yh2)">
+    <div class="product">
+        <div class="product-img">
+            <img th:src="@{/img/{img} (img = ${yh2.getImagem()})}" alt="">
+            <div class="product-label">
+                <span class="sale">-30%</span>
+                <span class="new">NEW</span>
+            </div>
+        </div>
+        <div class="product-body">
+            <p class="product-category">Category</p>
+            <h3 class="product-name"><a th:href="@{/detalhe/{id} (id=${yh2.id})}"
+                th:text="${yh2.getName()}"
+            ></a></h3>
+
+            <h4 class="product-price" th:text="${yh2.getPrice()}">
+                <del class="product-old-price">$990.00</del></h4>
+            <div class="product-rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </div>
+            <div class="product-btns">
+                <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+            </div>
+        </div>
+        <form th:action="@{/addToCheckout/{id} (id=${yh2.Id})}" method="post">
+            <!--        e necessario o csrf para o post ser autorizado pelo spring security-->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            <div class="add-to-cart">
+<!--                vou passar como path ao inves de usar o YatchForms-->
+<!--                    <input type="hidden" name="id" th:value="${yh2.getId()}"/>-->
+                    <button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart">
+                        </i> add to cart</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</html>

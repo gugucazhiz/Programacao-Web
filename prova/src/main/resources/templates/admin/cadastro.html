@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>AQuatics - Cadastrar Iate</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/bootstrap.min.css}"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/slick.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/slick-theme.css}"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/nouislider.min.css}"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" th:href="@{/css/home/font-awesome.min.css}">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home/style.css}"/>
+
+    <!-- Custom stlylesheet2 -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/admin/cadastroStyle.css}"/>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div th:replace="~{fragments/admin/allfragments :: header_admin}"></div>
+<!-- ── NAV ── -->
+<div th:replace="~{fragments/admin/allfragments :: nav_admin}"></div>
+
+<!-- ── MAIN ── -->
+<div class="cadastro-wrap">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="/admin"><i class="fa fa-arrow-left"></i> Voltar para Admin</a>
+        <i class="fa fa-chevron-right"></i>
+        <span>Novo Iate</span>
+    </div>
+
+    <div class="page-title">Cadastrar Novo Iate</div>
+
+
+
+    <!-- Preview da imagem sorteada aleatoriamente pelo controller -->
+    <div class="image-preview-card">
+        <div class="image-preview-header">
+            <i class="fa fa-image"></i> Imagem Atribuída Automaticamente
+        </div>
+        <div class="image-preview-body">
+            <img th:src="@{/img/{img} (img = ${yatch.getImagem()})}" src="/img/shop01.png" alt="Imagem sorteada" />
+            <div class="image-preview-info">
+                <p>A imagem abaixo foi sorteada aleatoriamente e será vinculada ao cadastro:</p>
+                <code th:text="${yatch.imagem}">/img/shop01.png</code>
+                <br/>
+                <span class="badge-random"><i class="fa fa-random"></i> Sorteio automático</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulário — POST para /salvar -->
+    <div class="form-card">
+        <div class="form-card-header">
+            <i class="fa fa-plus-circle"></i> Dados do Novo Iate
+        </div>
+
+        <form th:action="@{/admin/salvar}"
+              th:object="${yatch}"
+              method="post"
+              novalidate>
+
+            <!-- Alerta de erros globais -->
+            <div class="alert-error"
+                 th:if="${#fields.hasAnyErrors()}">
+                <i class="fa fa-exclamation-circle"></i>
+                Verifique os campos destacados e corrija os erros antes de salvar.
+            </div>
+
+            <!-- Campo oculto com a imagem já sorteada pelo controller -->
+            <input type="hidden" th:field="*{imagem}" />
+
+            <div class="form-body">
+                <div class="form-grid">
+
+                    <!-- Nome -->
+                    <div class="form-group">
+                        <label for="name">Nome <span class="required">*</span></label>
+                        <input type="text"
+                               id="name"
+                               th:field="*{name}"
+                               th:classappend="${#fields.hasErrors('name')} ? 'field-error'"
+                               placeholder="Ex: Sea Ray 320" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('name')}"
+                              th:errors="*{name}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <!-- Código do Produto -->
+                    <div class="form-group">
+                        <label for="codProduct">Cód. Produto <span class="required">*</span></label>
+                        <input type="text"
+                               id="codProduct"
+                               th:field="*{codProduct}"
+                               th:classappend="${#fields.hasErrors('codProduct')} ? 'field-error'"
+                               placeholder="Ex: PROD-0001" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('codProduct')}"
+                              th:errors="*{codProduct}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <!-- Cor -->
+                    <div class="form-group">
+                        <label for="color">Cor <span class="required">*</span></label>
+                        <input type="text"
+                               id="color"
+                               th:field="*{color}"
+                               th:classappend="${#fields.hasErrors('color')} ? 'field-error'"
+                               placeholder="Ex: Branco Perolado" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('color')}"
+                              th:errors="*{color}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <!-- Preço -->
+                    <div class="form-group">
+                        <label for="price">Preço (R$) <span class="required">*</span></label>
+                        <input type="number"
+                               id="price"
+                               th:field="*{price}"
+                               th:classappend="${#fields.hasErrors('price')} ? 'field-error'"
+                               placeholder="Ex: 150000.00"
+                               step="0.01"
+                               min="0" />
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('price')}"
+                              th:errors="*{price}">
+                            <i class="fa fa-warning"></i> Erro
+                        </span>
+                    </div>
+
+                    <hr class="form-divider" />
+
+                    <!-- Status -->
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="toggle-group">
+                            <input type="checkbox"
+                                   id="status"
+                                   th:field="*{status}" />
+                            <label for="status">Disponível para venda</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="/admin" class="btn-cancel">
+                    <i class="fa fa-times"></i> Cancelar
+                </a>
+                <button type="submit" class="btn-save">
+                    <i class="fa fa-check"></i> Cadastrar Iate
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<div th:replace="~{fragments/home/footer :: footer_global}"></div>
+
+</body>
+</html>
