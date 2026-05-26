@@ -43,6 +43,10 @@
 		<div th:replace="~{fragments/home/nav :: nav_global}"></div>
 		<!-- /NAVIGATION -->
 
+		<div th:if="${success}" class="alert alert-success">
+			<span th:text="${success}"></span>
+		</div>
+
 		<!-- SECTION -->
 		<div class="section">
 			<!-- container -->
