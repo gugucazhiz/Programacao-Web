@@ -25,7 +25,7 @@ public class AdminController {
     @GetMapping
     public String getAdminPage(Model model){
         model.addAttribute("Yatch",yatchServicy.getAllYatchs());
-        return "/admin/admin";
+        return "admin/admin";
     }
 
 
@@ -33,7 +33,7 @@ public class AdminController {
     public String editarForm(@RequestParam UUID id, Model model) {
         Yatch yatch = yatchServicy.getYatchById(id);
         model.addAttribute("yatch", yatch);
-        return "/admin/editar";
+        return "admin/editar";
     }
 
     @GetMapping("/cadastro")
@@ -41,7 +41,7 @@ public class AdminController {
         Yatch yatch = new Yatch();
         yatch.setImagem(yatchServicy.getImgSorted());
         model.addAttribute("yatch", yatch);
-        return "/admin/cadastro";
+        return "admin/cadastro";
     }
 
     @PostMapping("/salvar")
