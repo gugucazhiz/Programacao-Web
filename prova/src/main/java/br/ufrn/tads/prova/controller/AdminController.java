@@ -54,20 +54,14 @@ public class AdminController {
     @PostMapping("/restore/{id}")
     public String restore(@PathVariable UUID id,
                          RedirectAttributes redirectAttributes) {
-        yatchServicy.restore(id);
-        redirectAttributes.addFlashAttribute("successMessage",
-                "Iate Restaurado com sucesso!");
-        return "redirect:/admin";
+        return yatchServicy.restore(id,redirectAttributes);
     }
 
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable UUID id,
                          RedirectAttributes redirectAttributes) {
-        yatchServicy.deleteYatch(id);
-        redirectAttributes.addFlashAttribute("successMessage",
-                "Iate Deletado com sucesso!");
-        return "redirect:/admin";
+        return yatchServicy.deleteYatch(id, redirectAttributes);
     }
 
 

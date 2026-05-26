@@ -39,7 +39,9 @@ public class DataLoader {
                                         PasswordEncoder passwordEncoder){
         return args -> {
 
-            if(personRepository.findByEmail("admin@gmail.com") == null) {
+            if(personRepository.count() > 1) {
+                return;
+            }
                 User user = new User();
                 user.setUsername("admin");
                 user.setPassword(passwordEncoder.encode(adminPass));
@@ -75,7 +77,6 @@ public class DataLoader {
                 personRepository.saveAll(List.of(
                         person, person2
                 ));
-            }
                 System.out.println(adminPass);
         };
     }
@@ -84,6 +85,10 @@ public class DataLoader {
     @Bean
     CommandLineRunner initDatabase(YatchRepository repository){
         return args -> {
+
+            if(repository.count() > 10){
+                return;
+            }
             // Produto 1
             Yatch y1 = new Yatch();
             y1.setName("Veleiro Ocean");

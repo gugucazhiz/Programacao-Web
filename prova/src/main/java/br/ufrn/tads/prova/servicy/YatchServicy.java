@@ -22,17 +22,23 @@ public class YatchServicy {
     }
 
 
-    public void restore(UUID id){
+    public String restore(UUID id,RedirectAttributes redirectAttributes){
         Yatch yatch =yatchRepository.getById(id);
         yatch.setIsDeleted(null);
         yatchRepository.save(yatch);
+        redirectAttributes.addFlashAttribute("successMessage",
+                "Iate Restaurado com sucesso!");
+        return "redirect:/admin";
     }
 
-    public void deleteYatch(UUID id){
+    public String deleteYatch(UUID id, RedirectAttributes redirectAttributes){
         Yatch yatch =yatchRepository.getById(id);
         LocalDateTime localDateTime = LocalDateTime.now();
         yatch.setIsDeleted(localDateTime);
         yatchRepository.save(yatch);
+        redirectAttributes.addFlashAttribute("successMessage",
+                "Iate Deletado com sucesso!");
+        return "redirect:/admin";
     }
 
     public List<Yatch> getAllYatchs(){
