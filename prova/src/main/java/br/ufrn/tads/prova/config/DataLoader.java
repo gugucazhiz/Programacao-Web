@@ -86,7 +86,7 @@ public class DataLoader {
     CommandLineRunner initDatabase(YatchRepository repository){
         return args -> {
 
-            if(repository.count() > 10){
+            if(repository.count() > 9){
                 return;
             }
             // Produto 1
