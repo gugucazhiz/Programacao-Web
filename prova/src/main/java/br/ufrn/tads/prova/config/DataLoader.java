@@ -21,14 +21,12 @@ public class DataLoader {
     //na hora de subir essa aplicação em outro local
     //
     //vou usar o dataloader com o create-drop
-    final private SecurityConfig securityConfig;
 
 
     @Value("${server.custom.admin.password}")
     private String adminPass;
 
     public DataLoader(SecurityConfig securityConfig){
-        this.securityConfig = securityConfig;
     }
 
 
@@ -73,6 +71,7 @@ public class DataLoader {
             personRepository.saveAll(List.of(
                     person,person2
             ));
+            System.out.println(adminPass);
         };
     }
 
