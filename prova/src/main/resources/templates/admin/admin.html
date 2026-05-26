@@ -51,6 +51,10 @@
         </a>
     </div>
 
+    <div th:if="${successMessage}" class="alert alert-success">
+        <span th:text="${successMessage}"></span>
+    </div>
+
     <!-- Stats -->
     <div class="stats-strip">
         <div class="stat-card">
