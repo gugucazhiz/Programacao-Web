@@ -22,11 +22,13 @@ public class DataLoader {
     //
     //vou usar o dataloader com o create-drop
 
+    final private PersonRepository personRepository;
 
     @Value("${server.custom.admin.password}")
     private String adminPass;
 
-    public DataLoader(SecurityConfig securityConfig){
+    public DataLoader(PersonRepository personRepository){
+        this.personRepository = personRepository;
     }
 
 
@@ -36,42 +38,45 @@ public class DataLoader {
                                         PersonRepository personRepository,
                                         PasswordEncoder passwordEncoder){
         return args -> {
-            User user = new User();
-            user.setUsername("admin");
-            user.setPassword(passwordEncoder.encode(adminPass));
-            user.setRole("ADMIN");
 
-            Person person = new Person();
-            person.setName("Administrador");
-            person.setCpf("123.456.789-00");
-            person.setPhone("(84) 99999-9999");
-            person.setEmail("gustavo_msn_@hotmail.com");
+            if(personRepository.findByEmail("admin@gmail.com").isEmpty()) {
+                User user = new User();
+                user.setUsername("admin");
+                user.setPassword(passwordEncoder.encode(adminPass));
+                user.setRole("ADMIN");
 
-            user.setPerson(person);
-            person.setUser(user);
+                Person person = new Person();
+                person.setName("Administrador");
+                person.setCpf("123.456.789-00");
+                person.setPhone("(84) 99999-9999");
+                person.setEmail("gustavo_msn_@hotmail.com");
 
-            //////////////////////////
-            User user2 = new User();
-            user2.setUsername("user");
-            user2.setPassword(passwordEncoder.encode(adminPass));
-            user2.setRole("USER");
+                user.setPerson(person);
+                person.setUser(user);
 
-            Person person2 = new Person();
-            person2.setName("User");
-            person2.setCpf("123.456.000-00");
-            person2.setPhone("(99) 99999-9999");
-            person2.setEmail("gustavo_msn_@hotmail.com");
+                //////////////////////////
+                User user2 = new User();
+                user2.setUsername("user");
+                user2.setPassword(passwordEncoder.encode(adminPass));
+                user2.setRole("USER");
 
-            user2.setPerson(person2);
-            person2.setUser(user2);
+                Person person2 = new Person();
+                person2.setName("User");
+                person2.setCpf("123.456.000-00");
+                person2.setPhone("(99) 99999-9999");
+                person2.setEmail("gustavo_msn_@hotmail.com");
 
-            userRepository.saveAll(List.of(
-                    user,user2
-            ));
-            personRepository.saveAll(List.of(
-                    person,person2
-            ));
-            System.out.println(adminPass);
+                user2.setPerson(person2);
+                person2.setUser(user2);
+
+                userRepository.saveAll(List.of(
+                        user, user2
+                ));
+                personRepository.saveAll(List.of(
+                        person, person2
+                ));
+            }
+                System.out.println(adminPass);
         };
     }
 
