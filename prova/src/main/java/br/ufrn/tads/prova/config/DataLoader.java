@@ -39,7 +39,7 @@ public class DataLoader {
                                         PasswordEncoder passwordEncoder){
         return args -> {
 
-            if(personRepository.findByEmail("admin@gmail.com").isEmpty()) {
+            if(personRepository.findByEmail("admin@gmail.com") == null) {
                 User user = new User();
                 user.setUsername("admin");
                 user.setPassword(passwordEncoder.encode(adminPass));
