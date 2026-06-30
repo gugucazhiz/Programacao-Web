@@ -1,5 +1,6 @@
 package br.ufrn.tads.prova.domain.model;
 
+import br.ufrn.tads.prova.domain.interfaces.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-public class Product {
+public class Product extends AbstractEntity {
     public Product() {
 
     }
@@ -20,9 +21,6 @@ public class Product {
         this.setYatchsToBuy(yatchsIncomingToBuy);
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
 
     private BigDecimal subTotal = BigDecimal.valueOf(0.0);
 
@@ -34,5 +32,9 @@ public class Product {
 
     public void setYatchsToBuy(Yatch yatch){
         this.yatchsToBuy.add(yatch);
+    }
+
+    public void mockYatchsToBuy(List<Yatch> yatches){
+        this.yatchsToBuy = yatches;
     }
 }

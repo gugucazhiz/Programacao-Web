@@ -1,5 +1,6 @@
 package br.ufrn.tads.prova.domain.model;
 
+import br.ufrn.tads.prova.domain.interfaces.AbstractEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -16,11 +17,8 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User extends AbstractEntity implements UserDetails {
 
-    @Id
-    @GeneratedValue
-    private UUID id;
 
     private String username;
 

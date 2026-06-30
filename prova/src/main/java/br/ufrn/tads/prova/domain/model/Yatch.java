@@ -1,10 +1,8 @@
 package br.ufrn.tads.prova.domain.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import br.ufrn.tads.prova.domain.interfaces.AbstractEntity;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -12,14 +10,13 @@ import lombok.Setter;
 
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Setter
 @Getter
 @Entity
-public class Yatch {
+public class Yatch extends AbstractEntity {
 
     public Yatch(){
 
@@ -30,7 +27,7 @@ public class Yatch {
                  String imagem,
                  String codProduct,
                  BigDecimal price){
-        this.id=id;
+        this.setId(id);
         this.name=name;
         this.color=color;
         this.imagem=imagem;
@@ -38,21 +35,20 @@ public class Yatch {
         this.price = price;
     }
 
-    @Id
-    @GeneratedValue (strategy =GenerationType.AUTO)
-    private UUID id;
 
     private BigDecimal price;
 
     @NotBlank
+    @Column
     private String name;
 
     @NotBlank
+    @Column
     private String color;
 
-    private boolean status;
 
     @NotBlank
+    @Column
     private String imagem;
 
     @Pattern(
@@ -60,6 +56,7 @@ public class Yatch {
             message = "Código deve estar no formato PROD-0000"
     )
     @NotBlank
+    @Column
     private String codProduct;
 
     private LocalDateTime isDeleted;
