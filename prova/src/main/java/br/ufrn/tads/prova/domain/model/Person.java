@@ -1,6 +1,7 @@
 package br.ufrn.tads.prova.domain.model;
 
 
+import br.ufrn.tads.prova.domain.interfaces.AbstractEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
@@ -12,17 +13,15 @@ import java.util.UUID;
 @Setter
 @Getter
 @Entity
-public class Person{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class Person extends AbstractEntity {
 
 
     @NotBlank
+    @Column
     private String name;
 
     @NotBlank
+    @Column
     private String email;
 
     @Pattern(
@@ -30,6 +29,7 @@ public class Person{
             message = "Telefone deve estar no formato (99) 99999-9999"
     )
     @NotBlank
+    @Column
     private String phone;
 
 
@@ -38,6 +38,7 @@ public class Person{
             message = "CPF deve estar no formato 000.000.000-00"
     )
     @NotBlank
+    @Column
     private String cpf;
 
     @OneToOne
